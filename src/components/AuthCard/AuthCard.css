@@ -1,0 +1,117 @@
+/* ===== Kortet ===== */
+.MainCard {
+  width: 100%;
+  max-width: 400px;
+  margin: 5rem auto;
+  padding: 2rem;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background-color: var(--surface);
+  box-shadow:
+    0 0 40px rgba(10, 127, 212, 0.08),
+    0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* ===== Flikar ===== */
+.AuthTabs {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.AuthTabs button {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 0.5rem 0.75rem;
+  font: inherit;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.AuthTabs button:hover {
+  color: var(--text);
+}
+
+.AuthTabs button.active {
+  color: var(--accent-soft);
+  border-bottom-color: var(--accent-soft);
+}
+
+.AuthTabs span {
+  color: var(--border);
+}
+
+/* ===== Formulär ===== */
+.CardBody form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.CardBody label {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.CardBody form > label:first-child {
+  margin-top: 0;
+}
+
+.CardBody input {
+  width: 100%;
+  padding: 0.7rem 0.9rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.CardBody input:focus {
+  outline: none;
+  border-color: var(--accent-soft);
+  box-shadow: 0 0 0 3px rgba(108, 184, 240, 0.2);
+}
+
+/* Förhindrar att webbläsarens autofyll gör fälten vita/gula */
+.CardBody input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px var(--bg) inset;
+  -webkit-text-fill-color: var(--text);
+}
+
+/* ===== Skicka-knappen ===== */
+.submit-btn {
+  margin-top: 1rem;
+  width: 100%;
+  padding: 0.8rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(180deg, var(--accent-hover), var(--accent));
+  color: var(--on-accent);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(10, 127, 212, 0.35);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.submit-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(10, 127, 212, 0.45);
+}
+
+.submit-btn:active {
+  transform: translateY(0);
+}
+
+.submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
