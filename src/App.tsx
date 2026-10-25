@@ -3,6 +3,7 @@ import LoginPage from "./pages/LoginPage/LoginPage";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
 
 import { Routes, Route } from "react-router-dom";
+import ResetPasswordPage from "./pages/ResetPasswordPage/ResetPasswordPage";
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
             </RequireAuth>
           }
         />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
       </Routes>
     </div>
   );
