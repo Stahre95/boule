@@ -1,0 +1,47 @@
+/* src/components/ProfileCard/ProfileCard.css */
+
+/* ===== Etikett + värde ===== */
+.info-list {
+  display: grid;
+  gap: 1rem;
+  margin: 0 0 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .info-list {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.info-item dt {
+  margin-bottom: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.info-item dd {
+  margin: 0;
+  overflow-wrap: anywhere; /* långa e-postadresser bryts i stället för att ge sidscroll */
+}
+
+/* ===== Redigera-knappen ===== */
+.edit-btn {
+  min-height: 44px;
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  color: var(--text);
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  transition: border-color 0.2s, color 0.2s;
+  justify-self: end;
+}
+
+.edit-btn:hover {
+  color: var(--accent-soft);
+  border-color: var(--accent-soft);
+  text-decoration: none;
+}

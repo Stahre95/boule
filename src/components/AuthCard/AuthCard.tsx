@@ -128,7 +128,7 @@ export default function AuthCard() {
       )}
 
       <div className="CardBody">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="form">
           {mode === "signup" && (
             <>
               <label htmlFor="firstName">Förnamn</label>

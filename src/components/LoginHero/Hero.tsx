@@ -1,7 +1,7 @@
 import logo from "../../assets/images/firstcampboule.png";
-import "./LoginHero.css";
+import "./Hero.css";
 
-export default function LoginHero() {
+export default function Hero() {
   return (
     <div className="Hero-Container">
       <img src={logo} alt="First Camp Boule" className="Hero-Logo" />
