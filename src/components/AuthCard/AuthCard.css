@@ -2,7 +2,7 @@
 .MainCard {
   width: 100%;
   max-width: 400px;
-  margin: 5rem auto;
+  margin: 1rem auto;
   padding: 2rem;
   border-radius: 16px;
   border: 1px solid var(--border);
@@ -114,4 +114,51 @@
   opacity: 0.5;
   cursor: not-allowed;
   transform: none;
+}
+
+/* ===== Återställ lösenord ===== */
+.reset-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.reset-header h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.reset-header p {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+/* Liten textlänk, t.ex. "Glömt lösenord?" */
+.link-btn {
+  align-self: flex-end;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  font-size: 0.85rem;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.link-btn:hover {
+  color: var(--accent-soft);
+  text-decoration: underline;
+}
+
+.link-btn--center {
+  align-self: center;
+  margin-top: 0.5rem;
+}
+
+/* Bekräftelsetext */
+.form-message {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--accent-soft);
 }
