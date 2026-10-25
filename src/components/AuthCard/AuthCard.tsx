@@ -1,7 +1,28 @@
 import { useState, type FormEvent } from "react";
+import { supabase } from "../../lib/supabase";
 import "./AuthCard.css";
 
 type Mode = "login" | "signup" | "reset";
+
+const buttonText: Record<Mode, string> = {
+  login: "Logga in",
+  signup: "Skapa konto",
+  reset: "Skicka länk",
+};
+
+// Gör Supabases engelska felmeddelanden begripliga på svenska
+function translateError(message: string): string {
+  const m = message.toLowerCase();
+  if (m.includes("invalid login credentials"))
+    return "Fel e-post eller lösenord.";
+  if (m.includes("email not confirmed"))
+    return "Bekräfta din e-post först. Kolla inkorgen.";
+  if (m.includes("rate limit"))
+    return "För många försök. Vänta en stund och försök igen.";
+  if (m.includes("password should be at least"))
+    return "Lösenordet måste vara minst 6 tecken.";
+  return "Något gick fel. Försök igen.";
+}
 
 export default function AuthCard() {
   const [mode, setMode] = useState<Mode>("login");
@@ -10,28 +31,73 @@ export default function AuthCard() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  // Byt läge och rensa ev. meddelande
+  // Byt läge och rensa gamla texter
   function changeMode(next: Mode) {
     setMode(next);
     setMessage(null);
+    setError(null);
   }
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    setError(null);
+    setMessage(null);
+    setLoading(true);
 
-    if (mode === "login") {
-      console.log("Logga in", { email });
-    } else if (mode === "signup") {
-      console.log("Skapa konto", { firstName, lastName, email });
-    } else {
-      console.log("Återställ lösenord", { email });
-      // Samma svar oavsett om adressen finns, så att vi inte avslöjar vilka som har konto
-      setMessage(
-        "Om adressen finns hos oss har vi skickat en återställningslänk.",
-      );
+    const cleanEmail = email.trim();
+
+    try {
+      if (mode === "login") {
+        const { error } = await supabase.auth.signInWithPassword({
+          email: cleanEmail,
+          password,
+        });
+        if (error) throw error;
+        // Lyckad inloggning: routing tar över sen
+      } else if (mode === "signup") {
+        const first = firstName.trim();
+        const last = lastName.trim();
+        if (!first || !last) {
+          setError("Fyll i både förnamn och efternamn.");
+          return;
+        }
+
+        const { data, error } = await supabase.auth.signUp({
+          email: cleanEmail,
+          password,
+          options: { data: { first_name: first, last_name: last } },
+        });
+        if (error) throw error;
+
+        setPassword("");
+        // Om bekräftelse krävs finns ingen session än
+        if (!data.session) {
+          setMessage(
+            "Kolla din e-post och bekräfta kontot för att kunna logga in.",
+          );
+        }
+      } else {
+        const { error } = await supabase.auth.resetPasswordForEmail(
+          cleanEmail,
+          {
+            redirectTo: `${window.location.origin}/reset-password`,
+          },
+        );
+        if (error) throw error;
+
+        // Samma svar oavsett om adressen finns, så att vi inte avslöjar vilka som har konto
+        setMessage(
+          "Om adressen finns hos oss har vi skickat en återställningslänk.",
+        );
+      }
+    } catch (err) {
+      setError(translateError(err instanceof Error ? err.message : ""));
+    } finally {
+      setLoading(false);
     }
-    // Supabase kopplar vi in här sen
   }
 
   return (
@@ -130,10 +196,14 @@ export default function AuthCard() {
             </p>
           )}
 
-          <button type="submit" className="submit-btn">
-            {mode === "login" && "Logga in"}
-            {mode === "signup" && "Skapa konto"}
-            {mode === "reset" && "Skicka länk"}
+          {error && (
+            <p className="form-message form-message--error" role="alert">
+              {error}
+            </p>
+          )}
+
+          <button type="submit" className="submit-btn" disabled={loading}>
+            {loading ? "Vänta..." : buttonText[mode]}
           </button>
 
           {mode === "reset" && (

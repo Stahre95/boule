@@ -162,3 +162,5 @@
   font-size: 0.85rem;
   color: var(--accent-soft);
 }
+
+.form-message--error { color: var(--danger); }
